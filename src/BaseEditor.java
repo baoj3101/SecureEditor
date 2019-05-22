@@ -11,7 +11,7 @@ public class BaseEditor {
     // editor frame and text pane
     protected JFrame    frame;
     protected JTextPane textPane;
-    
+    protected JScrollPane editorScrollPane;
     // constructor
     public BaseEditor () {
         // initialize frame
@@ -23,6 +23,9 @@ public class BaseEditor {
         // initialize text pane
         textPane = new JTextPane();
         textPane.setDocument(new DefaultStyledDocument());
+        editorScrollPane = new JScrollPane(textPane);
+        
+        frame.add(editorScrollPane, BorderLayout.CENTER);
     }
 
     // show

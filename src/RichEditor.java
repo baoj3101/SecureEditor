@@ -16,11 +16,39 @@ public class RichEditor extends BaseEditor {
 
     // Font Buttons
     protected JButton btnBold, btnItalic, btnUnderline, btnColor;
+    private JComboBox<String> fontSizeComboBox__;
+    private static final String [] FONT_SIZES  = {"Font Size", "12", "14", "16", "18", "20", "22", "24", "26", "28", "30"};
+    private JTextPane editor__ = new JTextPane();
+    
+    
+    private class FontSizeItemListener implements ItemListener {
+        public void itemStateChanged(ItemEvent e) {
+            if ((e.getStateChange() != ItemEvent.SELECTED)
+                    || (fontSizeComboBox__.getSelectedIndex() == 0)) {
 
+                return;
+            }
+
+            String fontSizeStr = (String) e.getItem();
+            int newFontSize = 0;
+
+            try {
+                newFontSize = Integer.parseInt(fontSizeStr);
+            } catch (NumberFormatException ex) {
+
+                return;
+            }
+
+            fontSizeComboBox__.setAction(new FontSizeAction(fontSizeStr, newFontSize));
+            fontSizeComboBox__.setSelectedIndex(0); // initialize to (default) select
+            editor__.requestFocusInWindow();
+        }
+    }
+    
     // constructor
     public RichEditor() {
         super();
-
+        
         // button listener
         EditBtnListener editBtnListener = new EditBtnListener();
 
@@ -45,12 +73,26 @@ public class RichEditor extends BaseEditor {
         // Color
         btnColor = new JButton("Color");
         btnColor.addActionListener(new ColorBtnListener());
-
+        
+        // Font 
+        fontSizeComboBox__ = new JComboBox<String>(FONT_SIZES);
+	fontSizeComboBox__.setEditable(false);
+	fontSizeComboBox__.addItemListener(new FontSizeItemListener());
+        
+        
+        
+        
+        
+        
+        
+        
         // panel
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.add(btnBold);
         panel.add(btnItalic);
         panel.add(btnUnderline);
+        panel.add(fontSizeComboBox__);
+        //panel.add(btnFont);
         panel.add(new JSeparator(SwingConstants.VERTICAL));        
         panel.add(btnColor);
         JPanel toolbarPanel = new JPanel();
