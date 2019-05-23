@@ -1,9 +1,14 @@
 /**
- * Encrypt Interface: two methods encrypt and decrypt
+ * Encrypt Interface:
+ *   This is an interface to implement encryption and decryption
+ *   Two methods: encrypt and decrypt
+ * 
  * @author baoj3101
  */
 
 public interface Encrypt {
-    public byte[] encrypt (String data);
-    public String decrypt (byte[] data);
+    // Given byte array as input and return encrypted byte array
+    public byte[] encrypt (byte[] data);
+    // Given byte array as input and return decrypted byte array
+    public byte[] decrypt (byte[] data);
 }

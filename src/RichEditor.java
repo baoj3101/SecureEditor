@@ -23,13 +23,10 @@ import javax.swing.text.StyledEditorKit.*;
 public class RichEditor extends BaseEditor {
 
     // Toolbar items
-    protected JButton btnBold, btnItalic, btnUnderline;       // font style
-    protected JButton btnColor;                               // font color
     protected JComboBox<String> fontSizeSel;                  // font size
     protected JComboBox<String> fontFamilySel;                // font family
-
-    // File Load/Save
-    protected File file;
+    protected JButton btnBold, btnItalic, btnUnderline;       // font style
+    protected JButton btnColor;                               // font color
 
     // constructor
     public RichEditor() {
@@ -41,30 +38,24 @@ public class RichEditor extends BaseEditor {
         // Bold Button
         btnBold = new JButton(new BoldAction());
         btnBold.setHideActionText(true);
-        btnBold.setText("B");
+        btnBold.setText("<html><b>B</b></html>");
         btnBold.addActionListener(editBtnListener);
 
         // Italic Button
         btnItalic = new JButton(new ItalicAction());
         btnItalic.setHideActionText(true);
-        btnItalic.setText("I");
+        btnItalic.setText("<html><i>I</i></html>");
         btnItalic.addActionListener(editBtnListener);
 
         // Underline Button
         btnUnderline = new JButton(new UnderlineAction());
         btnUnderline.setHideActionText(true);
-        btnUnderline.setText("U");
+        btnUnderline.setText("<html><u>U</u></html>");
         btnUnderline.addActionListener(editBtnListener);
 
         // Color Button
         btnColor = new JButton("Color");
         btnColor.addActionListener(new ColorBtnListener());
-
-        // Font Size Selector
-        String[] SIZES = {"Font Size", "10", "11", "12", "14", "16", "18", "20", "24", "28", "30", "36", "40", "48"};
-        fontSizeSel = new JComboBox<String>(SIZES);
-        fontSizeSel.setEditable(false);
-        fontSizeSel.addItemListener(new FontSizeListener());
 
         // Font Family Selector
         GraphicsEnvironment g = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -72,14 +63,22 @@ public class RichEditor extends BaseEditor {
         fontFamilySel.setEditable(false);
         fontFamilySel.addItemListener(new FontFamilyListener());
 
+        // Font Size Selector
+        String[] SIZES = {"10", "11", "12", "14", "16", "18", "20", "24", "28", "30", "36", "40", "48"};
+        fontSizeSel = new JComboBox<String>(SIZES);
+        fontSizeSel.setEditable(false);
+        fontSizeSel.addItemListener(new FontSizeListener());
+
         // panel
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panel.add(new JLabel("Font Family"));
+        panel.add(fontFamilySel);
+        panel.add(new JLabel("Font Size"));
+        panel.add(fontSizeSel);
+        panel.add(new JSeparator(SwingConstants.VERTICAL));
         panel.add(btnBold);
         panel.add(btnItalic);
         panel.add(btnUnderline);
-        panel.add(new JSeparator(SwingConstants.VERTICAL));
-        panel.add(fontSizeSel);
-        panel.add(fontFamilySel);
         panel.add(new JSeparator(SwingConstants.VERTICAL));
         panel.add(btnColor);
 
@@ -87,30 +86,46 @@ public class RichEditor extends BaseEditor {
         toolbarPanel.setLayout(new BoxLayout(toolbarPanel, BoxLayout.PAGE_AXIS));
         toolbarPanel.add(panel);
 
-        // file menu
-        JMenu fileMenu = new JMenu("File");
-
-        JMenuItem fileNew = new JMenuItem("New File");       // "New File"
-        fileNew.addActionListener(new FileNewListener());
-        fileMenu.add(fileNew);
-        JMenuItem fileOpen = new JMenuItem("Open File");     // "Open File"
-        fileOpen.addActionListener(new FileOpenListener());
-        fileMenu.add(fileOpen);
-        JMenuItem fileSave = new JMenuItem("Save File");     // "Save File"
-        fileSave.addActionListener(new FileSaveListener());
-        fileMenu.add(fileSave);
-        JMenuItem fileExit = new JMenuItem("Exit");          // "Exit"
-       fileExit.addActionListener(new FileExitListener());
-        fileMenu.add(fileExit);
-
-        // menu bar
-        JMenuBar menuBar = new JMenuBar();
-        menuBar.add(fileMenu);
-
         // add menubar and toolbar to frame
-        frame.setJMenuBar(menuBar);
         frame.add(toolbarPanel, BorderLayout.NORTH);
-        frame.setTitle("RichEditor: New File");
+        setTitle("New File");
+    }
+
+    // get doc from text pane
+    public StyledDocument getDocument() {
+        return (DefaultStyledDocument) textPane.getDocument();
+    }
+
+    // Open file and load into text pane
+    public void OpenFile() {
+        StyledDocument doc = null;
+        try ( InputStream inStream = new FileInputStream(file);  ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
+            doc = (DefaultStyledDocument) objInStream.readObject();
+        } catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
+            return;
+        } catch (ClassNotFoundException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        textPane.setDocument(doc);
+        setTitle(file.getName());
+    }
+
+    // Save content from text pane to file
+    public void SaveFile() {
+        DefaultStyledDocument doc = (DefaultStyledDocument) getDocument();
+        try ( OutputStream outStream = new FileOutputStream(file);  ObjectOutputStream objOutStream = new ObjectOutputStream(outStream)) {
+            objOutStream.writeObject(doc);
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        setTitle(file.getName());
+
+    }
+
+    // abstract methods
+    public void setTitle(String str) {
+        frame.setTitle("Rich Editor: " + str);
     }
 
     // main for testing
@@ -158,7 +173,7 @@ public class RichEditor extends BaseEditor {
             String sel = (String) e.getItem();
             int fontSize = Integer.parseInt((String) e.getItem());;
             fontSizeSel.setAction(new FontSizeAction(sel, fontSize));
-            fontSizeSel.setSelectedIndex(0);
+            //fontSizeSel.setSelectedIndex(0);
             textPane.requestFocusInWindow();
         }
     }
@@ -173,83 +188,8 @@ public class RichEditor extends BaseEditor {
 
             String sel = (String) e.getItem();
             fontFamilySel.setAction(new FontFamilyAction(sel, sel));
-            fontFamilySel.setSelectedIndex(0);
+            //fontFamilySel.setSelectedIndex(0);
             textPane.requestFocusInWindow();
         }
     }
-
-    // file menu even handler: New File
-    protected class FileNewListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            textPane.setDocument(new DefaultStyledDocument());
-            file = null;
-            frame.setTitle("RichEditor: New file");
-        }
-    }
-
-    // file menu even handler: Open File
-    protected class FileOpenListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // open file dialog and choose a file to open
-            JFileChooser fileChooser = new JFileChooser();
-            if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                file = fileChooser.getSelectedFile();
-            } else {
-                return;
-            }
-
-            // read file
-            StyledDocument doc = null;
-            try (InputStream inStream = new FileInputStream(file); ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
-                doc = (DefaultStyledDocument) objInStream.readObject();
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
-                return;
-            } catch (ClassNotFoundException | IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            textPane.setDocument(doc);
-            frame.setTitle("RichEditor: " + file.getName());
-        }
-    }
-
-    // file menu even handler: Save File    
-    protected class FileSaveListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // open file dialog and choose a file to save
-            if (file == null) {
-                JFileChooser fileChooser = new JFileChooser();
-                if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-                    file = fileChooser.getSelectedFile();
-                }
-            }
-            if (file == null) {
-                return;
-            }
-
-            DefaultStyledDocument doc = (DefaultStyledDocument) getDocument();
-            try (OutputStream outStream = new FileOutputStream(file); ObjectOutputStream objOutStream = new ObjectOutputStream(outStream)) {
-                objOutStream.writeObject(doc);
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-            frame.setTitle("RichEditor: " + file.getName());
-        }
-    }
-
-    // file menu even handler: Exit
-    protected class FileExitListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            System.exit(0);
-        }
-    }
-
 }
