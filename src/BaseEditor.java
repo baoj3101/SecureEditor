@@ -68,11 +68,11 @@ public abstract class BaseEditor {
     public void show() {
         // app splash window with PNG
         JWindow window = new JWindow();
-        ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/splash.png")).getImage().getScaledInstance(670, 340, Image.SCALE_DEFAULT));
+        ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/splash.png")).getImage().getScaledInstance(560, 310, Image.SCALE_DEFAULT));
         JLabel splash = new JLabel();
         splash.setIcon(icon);
         window.getContentPane().add(splash);        
-        window.setBounds(400, 200, 670, 340);
+        window.setBounds(400, 200, 560, 310);
         window.setVisible(true);
         try {
             Thread.sleep(3000);
