@@ -7,8 +7,8 @@
  */
 
 public interface Encrypt {
-    // Given byte array as input and return encrypted byte array
-    public byte[] encrypt (byte[] data);
-    // Given byte array as input and return decrypted byte array
-    public byte[] decrypt (byte[] data);
+    // Given string as input and return encrypted base64 string
+    public String encrypt (String data);
+    // Given base64 string as input and return decrypted string
+    public String decrypt (String data);
 }

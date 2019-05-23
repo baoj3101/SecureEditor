@@ -7,21 +7,47 @@
  *
  * @author baoj3101
  */
+import java.util.Base64;
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.security.*;
+import javax.crypto.Cipher;
 
 public class SecureEditor extends BaseEditor implements Encrypt {
-    // RSA encryption/decryption variables
+
+    // RSA variables
+    private static final int keySize = 2048;         // 2048-bit RSA
+    private static final int keySeed = 20190523;     // fixed random seed to ensure repeatibilty
+    private static KeyPair rsaKey;                   // public/private key pair
 
     // constructor
     public SecureEditor() {
         super();
         setTitle("New File");
+
+        // generate RSA key pair
+        System.out.println("Debug: generating RSA key pair ......");
+        genRSAKey();              // generate RSA key using fixed random seed
+        
+        // print for debugging
+        System.out.println("Debug: public key generated");
+        System.out.println(rsaKey.getPublic());
+    }
+
+    // generate RSA key pair
+    private void genRSAKey() {
+        try {
+            SecureRandom random = SecureRandom.getInstance("SHA1PRNG");
+            random.setSeed(keySeed);             // fix random seed for repeatibility
+            KeyPairGenerator genKey = KeyPairGenerator.getInstance("RSA");
+            genKey.initialize(keySize, random);
+            rsaKey = genKey.genKeyPair();        // generat RSA key pair
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getDocument() {
@@ -31,17 +57,19 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     // Open file and load into text pane
     public void OpenFile() {
         StringBuilder lines = new StringBuilder();
-        try ( BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
             String line;
             while ((line = br.readLine()) != null) {
-                lines.append(line).append("\r\n");
+                lines.append(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // To be implemented: decryption
-        
-        textPane.setText(lines.toString());
+        // Decode and decrypt 
+        String encodedText = lines.toString();
+        String clearText = decrypt(encodedText);
+
+        textPane.setText(clearText);
         setTitle(file.getName());
     }
 
@@ -49,8 +77,12 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     public void SaveFile() {
         try {
             FileWriter fileWriter = new FileWriter(file);
-            // To be implemented: encryption
-            fileWriter.write(getDocument());
+
+            // Get text and encrypt and encode to based64
+            String clearText = getDocument();
+            String encodedText = encrypt(clearText);
+
+            fileWriter.write(encodedText);
             fileWriter.flush();
             fileWriter.close();
         } catch (IOException e) {
@@ -68,7 +100,7 @@ public class SecureEditor extends BaseEditor implements Encrypt {
         BaseEditor e = new SecureEditor();
         e.show();
     }
-    
+
     //==========================================================================
     // RSA Encryption Methods
     //
@@ -81,14 +113,66 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     // 6. Encryption: c = m^e mod n where m is the data to be encrypted
     // 7. Decryption: m = c^d mod n where c is the encrypted data
     //==========================================================================
-    // Methods from java.security.SecureRandom are used here
-    
-    // Given byte array as input and return encrypted byte array
-    public byte[] encrypt (byte[] data) {
-        return null;
+    // Shared method to go through data to encrypt/decrypt block by block
+    private byte[] cipherDoFinal(Cipher c, byte[] data, int blockSize) {
+        int pos = 0;
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+
+        while (pos < data.length) {
+            if (data.length - pos < blockSize) {     // end of array
+                blockSize = data.length - pos;
+            }
+            try {
+                outStream.write(c.doFinal(data, pos, blockSize));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            pos += blockSize;
+        }
+        // return byte array
+        return outStream.toByteArray();
     }
+    // Methods from java.security.SecureRandom are used here
+    // Given byte array as input and return encrypted byte array
+
+    public String encrypt(String data) {
+        String ret = null;
+        try {
+            // initialize Cipher
+            Cipher c = Cipher.getInstance("RSA");
+            c.init(Cipher.ENCRYPT_MODE, rsaKey.getPrivate());  // encrypt using private key
+
+            // encryption
+            int blockSize = keySize / 8 - 11;                  // block size based on key size
+            byte[] enc = cipherDoFinal (c, data.getBytes(), blockSize);
+            
+            // base64 encoding to convert byte array to string
+            ret = new String(Base64.getEncoder().encode(enc));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
     // Given byte array as input and return decrypted byte array
-    public byte[] decrypt (byte[] data) {
-        return null;
+    public String decrypt(String data) {
+        String ret = null;
+        try {
+            // initialize Cipher
+            Cipher c = Cipher.getInstance("RSA");
+            c.init(Cipher.DECRYPT_MODE, rsaKey.getPublic());  // decrypt using public key
+            
+            // based64 decoding to convert string to byte array
+            byte[] decoded = Base64.getDecoder().decode(data.getBytes());
+            // decryption
+            int blockSize = keySize / 8;                     // block size based on key size
+            byte[] dec = cipherDoFinal (c, decoded, blockSize);
+            
+            // return as String
+            ret = new String(dec);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 }

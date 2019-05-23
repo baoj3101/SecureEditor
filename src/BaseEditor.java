@@ -21,7 +21,7 @@ public abstract class BaseEditor {
     protected JTextPane textPane;
     protected JScrollPane scrollPane;
 
-    // file menu 
+    // file menu: Open File, Save File, and Exit 
     JMenuItem fileOpen, fileSave, fileExit;
 
     // file
@@ -31,7 +31,7 @@ public abstract class BaseEditor {
     public BaseEditor() {
         // initialize frame
         frame = new JFrame("BaseEditor");
-        frame.setSize(800, 800);          // window size
+        frame.setSize(800, 800);          // window size 800x800
         frame.setLocation(100, 100);      // window location
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -65,7 +65,7 @@ public abstract class BaseEditor {
 
     // show with splash
     public void show() {
-        // app splash
+        // app splash window with PNG
         JWindow window = new JWindow();
         ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/splash.png")).getImage().getScaledInstance(670, 340, Image.SCALE_DEFAULT));
         JLabel splash = new JLabel();
@@ -87,7 +87,7 @@ public abstract class BaseEditor {
     }
 
     //==========================================================================
-    // Abstract Methods
+    // Abstract Methods: To be implemented by each type of editor
     //==========================================================================
     // Open file and load into text pane
     public abstract void OpenFile();
@@ -99,7 +99,7 @@ public abstract class BaseEditor {
     public abstract void setTitle(String str);
 
     //==========================================================================
-    // Event Handlers
+    // Event Handlers for file menu items
     //==========================================================================
     // file menu even handler: Open File
     protected class FileOpenListener implements ActionListener {
