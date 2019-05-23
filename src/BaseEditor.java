@@ -22,6 +22,7 @@ public abstract class BaseEditor {
     protected JScrollPane scrollPane;
 
     // file menu: Open File, Save File, and Exit 
+    JMenuBar  menuBar;
     JMenuItem fileOpen, fileSave, fileExit;
 
     // file
@@ -56,7 +57,7 @@ public abstract class BaseEditor {
         fileMenu.add(fileExit);
 
         // menu bar
-        JMenuBar menuBar = new JMenuBar();
+        menuBar = new JMenuBar();
         menuBar.add(fileMenu);
 
         // add menubar to frame
