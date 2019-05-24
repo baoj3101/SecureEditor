@@ -22,7 +22,7 @@ public class SecureEditor extends BaseEditor implements Encrypt {
 
     // encryption variables
     private static final int keySize = 256;          // 256-bit AES
-    private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&";
+    private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&"; // 32 char key for AES
 
     // constructor
     public SecureEditor() {
@@ -109,7 +109,7 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     public String encrypt(String data) {
         String ret = null;
         try {
-            // initialize Cipher
+            // initialize Cipher to AES algorithm
             Key aesKey = new SecretKeySpec(key.getBytes(), "AES");
             System.out.println(aesKey);
             Cipher c = Cipher.getInstance("AES");
