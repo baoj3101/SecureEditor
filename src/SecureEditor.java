@@ -23,11 +23,51 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     // encryption variables
     private static final int keySize = 256;          // 256-bit AES
     private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&"; // 32 char key for AES
-
+    JMenuItem showD, showE;
+    
+    private String contents;
+    
+    
     // constructor
     public SecureEditor() {
         super();
         setTitle("New File");
+         // add tool menu: to render HTML
+        JMenu toolMenu = new JMenu("Tool");
+        showD = new JMenuItem("Show Decrypted");            // "Show Decrypted"
+        showD.addActionListener(new ShowDListener());
+        toolMenu.add(showD);
+        showE = new JMenuItem("Show Encrypted");     // "Show Encrypted"
+        showE.setEnabled(false);
+        showE.addActionListener(new ShowEListener());
+        toolMenu.add(showE);
+        menuBar.add(toolMenu);
+    }
+    
+    protected class ShowDListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            contents = textPane.getText();
+            textPane.setContentType("text/plain");
+            textPane.setText(contents);
+            contents = null;
+            showE.setEnabled(true);
+            showD.setEnabled(false);
+        }
+    }
+    
+     protected class ShowEListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // store text pane sting to contents
+            contents = textPane.getText();
+            textPane.setContentType("text/html");
+            textPane.setText(encrypt(contents));
+            showE.setEnabled(false);
+            showD.setEnabled(true);
+        }
     }
 
     public String getDocument() {
