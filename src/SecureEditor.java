@@ -21,53 +21,38 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecureEditor extends BaseEditor implements Encrypt {
 
     // encryption variables
-    private static final int keySize = 256;          // 256-bit AES
-    private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&"; // 32 char key for AES
+
+    // By default, AES supports a 128 Bit key. 
+    // To use longer key size, need higher version of JDK > JDK8
+    private static final int keySize = 128;                // 128-bit AES
+    private static final String key = "x,.@$klk;a,cjk09";  // 16 char key for AES
+
+    //    private static final int keySize = 256;          // 256-bit AES
+    //    private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&"; // 32 char key for AES
+    
+    // tool menu
     JMenuItem showD, showE;
-    
+
+    // buffer to store editor content
     private String contents;
-    
-    
+
     // constructor
     public SecureEditor() {
         super();
         setTitle("New File");
-         // add tool menu: to render HTML
-        JMenu toolMenu = new JMenu("Tool");
-        showD = new JMenuItem("Show Decrypted");            // "Show Decrypted"
+        Security.setProperty("crypto.policy", "unlimited");
+        
+        // add tool menu: to show encrypted or decrypted content
+        JMenu toolMenu = new JMenu("View");
+        showE = new JMenuItem("Show Encrypted");     // "Show Encrypted"
+        showE.setEnabled(true);
+        showE.addActionListener(new ShowEListener());
+        showD = new JMenuItem("Show Decrypted");     // "Show Decrypted"
+        showD.setEnabled(false);
         showD.addActionListener(new ShowDListener());
         toolMenu.add(showD);
-        showE = new JMenuItem("Show Encrypted");     // "Show Encrypted"
-        showE.setEnabled(false);
-        showE.addActionListener(new ShowEListener());
         toolMenu.add(showE);
-        menuBar.add(toolMenu);
-    }
-    
-    protected class ShowDListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            contents = textPane.getText();
-            textPane.setContentType("text/plain");
-            textPane.setText(contents);
-            contents = null;
-            showE.setEnabled(true);
-            showD.setEnabled(false);
-        }
-    }
-    
-     protected class ShowEListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // store text pane sting to contents
-            contents = textPane.getText();
-            textPane.setContentType("text/html");
-            textPane.setText(encrypt(contents));
-            showE.setEnabled(false);
-            showD.setEnabled(true);
-        }
+        menuBar.add(toolMenu, 1);
     }
 
     public String getDocument() {
@@ -77,7 +62,7 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     // Open file and load into text pane
     public void OpenFile() {
         StringBuilder lines = new StringBuilder();
-        try ( BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
             String line;
             while ((line = br.readLine()) != null) {
                 lines.append(line);
@@ -119,6 +104,33 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     public static void main(String[] args) {
         BaseEditor e = new SecureEditor();
         e.show();
+    }
+
+    //==========================================================================
+    // Event Handlers
+    //==========================================================================    
+    // Show Decrypted Handler
+    protected class ShowDListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            textPane.setText(contents);
+            contents = null;
+            showE.setEnabled(true);
+            showD.setEnabled(false);
+        }
+    }
+
+    protected class ShowEListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // store text pane sting to contents
+            contents = textPane.getText();
+            textPane.setText(encrypt(contents));
+            showE.setEnabled(false);
+            showD.setEnabled(true);
+        }
     }
 
     //==========================================================================

@@ -22,7 +22,7 @@ public class HTMLEditor extends TextEditor {
         setTitle("New File");
 
         // add tool menu: to render HTML
-        JMenu toolMenu = new JMenu("Tool");
+        JMenu toolMenu = new JMenu("View");
         showHTML = new JMenuItem("Show HTML");            // "Show HTML"
         showHTML.addActionListener(new ShowHTMLListener());
         toolMenu.add(showHTML);
@@ -30,7 +30,7 @@ public class HTMLEditor extends TextEditor {
         showPlain.setEnabled(false);
         showPlain.addActionListener(new ShowPlainListener());
         toolMenu.add(showPlain);
-        menuBar.add(toolMenu);
+        menuBar.add(toolMenu, 1);
     }
 
     // set title

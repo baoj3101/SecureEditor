@@ -22,8 +22,8 @@ public abstract class BaseEditor {
     protected JScrollPane scrollPane;
 
     // file menu: Open File, Save File, and Exit 
-    JMenuBar  menuBar;
-    JMenuItem fileOpen, fileSave, fileExit;
+    JMenuBar menuBar;
+    JMenuItem fileOpen, fileSave, fileExit, helpHowTo;
 
     // file
     protected File file;
@@ -46,19 +46,26 @@ public abstract class BaseEditor {
 
         // file menu: Open/Save/Exit
         JMenu fileMenu = new JMenu("File");
-        JMenuItem fileOpen = new JMenuItem("Open File");     // "Open File"
+        fileOpen = new JMenuItem("Open File");     // "Open File"
         fileOpen.addActionListener(new FileOpenListener());
         fileMenu.add(fileOpen);
-        JMenuItem fileSave = new JMenuItem("Save File");     // "Save File"
+        fileSave = new JMenuItem("Save File");     // "Save File"
         fileSave.addActionListener(new FileSaveListener());
         fileMenu.add(fileSave);
-        JMenuItem fileExit = new JMenuItem("Exit");          // "Exit"
+        fileExit = new JMenuItem("Exit");          // "Exit"
         fileExit.addActionListener(new FileExitListener());
         fileMenu.add(fileExit);
+
+        // help menu: How To
+        JMenu helpMenu = new JMenu("Help");
+        helpHowTo = new JMenuItem("How to ...");   // "How to"
+        helpHowTo.addActionListener(new HelpHowToListener());
+        helpMenu.add(helpHowTo);
 
         // menu bar
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
+        menuBar.add(helpMenu);
 
         // add menubar to frame
         frame.setJMenuBar(menuBar);
@@ -71,7 +78,7 @@ public abstract class BaseEditor {
         ImageIcon icon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("resources/splash.png")).getImage().getScaledInstance(560, 310, Image.SCALE_DEFAULT));
         JLabel splash = new JLabel();
         splash.setIcon(icon);
-        window.getContentPane().add(splash);        
+        window.getContentPane().add(splash);
         window.setBounds(400, 200, 560, 310);
         window.setVisible(true);
         try {
@@ -143,6 +150,38 @@ public abstract class BaseEditor {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
+        }
+    }
+
+    // help menu event handler: How to
+    protected class HelpHowToListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // initialize popup window for help
+            JFrame popup = new JFrame();
+            popup.setSize(800, 600);
+            popup.setLocation(200, 200);
+            popup.setTitle("Help");
+            JTextPane textArea = new JTextPane();
+            textArea.setDocument(new DefaultStyledDocument());
+            JScrollPane scroll = new JScrollPane(textArea);
+            popup.add(scroll, BorderLayout.CENTER);
+
+            // load how to from file
+            StyledDocument doc = null;
+            try (InputStream inStream = getClass().getResourceAsStream("resources/help.txt"); ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
+                doc = (DefaultStyledDocument) objInStream.readObject();
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
+                return;
+            } catch (ClassNotFoundException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            // show help doc in popup window
+            textArea.setDocument(doc);
+            popup.setVisible(true);
+            textArea.requestFocusInWindow();
         }
     }
 }
