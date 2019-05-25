@@ -169,17 +169,19 @@ public abstract class BaseEditor {
             popup.add(scroll, BorderLayout.CENTER);
 
             // load how to from file
-            StyledDocument doc = null;
-            try (InputStream inStream = getClass().getResourceAsStream("resources/help.txt"); ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
-                doc = (DefaultStyledDocument) objInStream.readObject();
-            } catch (FileNotFoundException ex) {
-                JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
-                return;
-            } catch (ClassNotFoundException | IOException ex) {
-                throw new RuntimeException(ex);
+            StringBuilder lines = new StringBuilder();
+            try ( InputStream is = getClass().getClassLoader().getResourceAsStream("resources/help.html");  BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    lines.append(line).append("\r\n");
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
+
             // show help doc in popup window
-            textArea.setDocument(doc);
+            textArea.setContentType("text/html");
+            textArea.setText(lines.toString());
             popup.setVisible(true);
             textArea.requestFocusInWindow();
         }
