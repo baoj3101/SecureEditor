@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>The Jython Project</title>
+</head>
+<body>
+<p><strong>Jython 2.7.0 Final Released</strong> (May 2015)</p>
+<p>Please see the <a class="reference external" href="https://hg.python.org/jython/file/412a8f9445f7/NEWS">NEWS</a>
+file for detailed release notes.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.fi/2015/05/jython-270-final-released.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 Release Candidate 3 Released</strong> (April 2015)</p>
+<p>Please see the <a class="reference external" href="https://hg.python.org/jython/file/40ea8d57ec6a/NEWS">NEWS</a>
+file for detailed release notes.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.fi/2015/04/jython-27-release-candidate-3-available.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 PyCon 2015 Talk</strong> (April 2015)</p>
+<p>Jim Baker gave a <a class="reference external" href="https://www.youtube.com/watch?v=hLm3garVQFo">talk</a> at PyCon 2015 in Montreal
+about how we got to Jython 2.7 and what's coming next.</p>
+<p><strong>Jython 2.7 Release Candidate 2 Released</strong> (April 2015)</p>
+<p>Please see the <a class="reference external" href="https://hg.python.org/jython/file/0213400c518f/NEWS">NEWS</a>
+file for detailed release notes.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.com/2015/04/jython-27-release-candidate-2-available.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 Release Candidate 1 Released</strong> (March 2015)</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.com/2015/03/jython-27-release-candidate-1-available.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 Beta 4 Released</strong> (February 2015)</p>
+<p>Please see the <a class="reference external" href="https://hg.python.org/jython/file/17d18c6dde96/NEWS">NEWS</a>
+file for detailed release notes.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.com/2015/02/jython-27-beta4-released.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 Beta 3 Released</strong> (August 2014)</p>
+<p>Please see the <a class="reference external" href="http://hg.python.org/jython/file/744d673392b4/NEWS">NEWS</a>
+file for detailed release notes.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.com/2014/08/jython-27-beta3-released.html">Frank Wierzbickis Weblog</a>.</p>
+<p><strong>Jython 2.7 Beta 2 Released</strong> (May 2013)</p>
+<p>Jython 2.7b2 brings us up to language level compatibility with the 2.7 version
+of CPython. We have focused largely on CPython compatibility, and so this
+release of Jython can run more pure Python apps then any previous release.
+Please see the NEWS file for detailed release notes. This is primarily a bugfix
+release, with numerous improvements, including much improvement on Windows
+support.</p>
+<p>Read more on <a class="reference external" href="http://fwierzbicki.blogspot.fi/2014/05/jython-27-beta2-released.html">Frank Wierzbickis Weblog</a></p>
+<p><strong>PyDev 3.4.1 Available</strong> (May 2013)</p>
+<p>Please visit the <a class="reference external" href="http://pydev.org">PyDev Site</a> for more information.</p>
+<p><strong>PyDev 3.0 Released</strong> (November 2013)</p>
+<p>From now on, PyDev requires Eclipse 3.7 or 4.3 onwards and Java 7! For older versions, keep using PyDev 2.x.</p>
+<p>Interpreter is now kept up to date with changes to the interpreter, so, pip-installing packages will automatically update internal caches without requiring a manual step.</p>
+<p>Fixed issue connecting to shell for code-completion (which could halt the IDE).
+Please visit the <a class="reference external" href="http://pydev.org">PyDev Site</a> for more information.</p>
+<p><strong>JyNI 2.7-alpha 2 Released</strong> (October 2013)</p>
+<p>JyNI is a compatibility layer with the goal to enable Jython to use native CPython extensions like NumPy or SciPy. This way we aim to enable scientific Python code to run on Jython. Since Java is rather present in industry, while Python is more present in science, JyNI is an important step to lower the cost of using scientific code in industrial environments.</p>
+<p>Our philosophy is to integrate JyNI with Jython and CPython extensions as seamless as possible. So JyNI aims to work without any recompilation of Jython or the desired CPython extensions. It neither requires a customized Jython version, nor customized versions of the CPython extensions (of course your JyNI version must meet the platform your CPython extension was build for). Simply put JyNI.jar on the classpath (along with its native libraries) and Jython should �magically� be able to load native extensions, as far as the needed Python C-API is already implemented by JyNI.</p>
+<p>Read More at <a class="reference external" href="http://jyni.org">JyNI.org</a></p>
+<p><strong>Jython 2.5.4rc 1 Has Been Released</strong> (February 10, 2013)</p>
+<p>This release fixes numerous bugs since the 2.5.3 release of Jython. Some highlights include:</p>
+<blockquote>
+<p>-The file upload fix for Tomcat and Jetty has been changed</p>
+<p>-Some NullPointerExceptions where fixed.</p>
+</blockquote>
+<p>For more information, see the <a class="reference external" href="http://www.jython.org/latest.html">Release Notes</a>.</p>
+<p><strong>Jython 2.7beta 1 Has Been Released</strong> (February 10, 2013)</p>
+<p>The Jython development team is proud to announce the 2.7beta 1 release!  Jython 2.7b1 brings us up to language level compatibility with the 2.7 version
+of CPython. We have focused largely on CPython compatibility, and so this
+release of Jython can run more pure Python apps then any previous release.</p>
+<p>Some notable new features
+in this release are: a bytearray implementation, a buffer api, memoryview, and a
+bz2 module.  Please see the <a class="reference external" href="http://www.jython.org/latest.html">Release Notes</a> for detailed release notes.</p>
+<p><strong>Jython 2.5.3 Final Has Been Released</strong> (August 13, 2012)</p>
+<p>The Jython development team is proud to announce the final 2.5.3 release!  For a complete listing of changes, please visit the <a class="reference external" href="http://www.jython.org/latest.html">Release Notes</a>.</p>
+<div class="section" id="latest-blogs-and-interesting-stuff">
+<h1>Latest Blogs and Interesting Stuff</h1>
+<p><strong>Jython 101 - A Refreshing Look at a Mature Alternative - Part 2</strong> (May/June 2013)</p>
+<p>Article covering the integration of Jython and Java - Part 2 of 2</p>
+<p>Read <a class="reference external" href="http://www.oraclejavamagazine-digital.com/javamagazine_open/20130506#pg83">Jython 101 - Part 2</a></p>
+<p><strong>Jython 101 - A Refreshing Look at a Mature Alternative</strong> (March/April 2013)</p>
+<p>Article on Jython that was published in Java Magazine - Part 1 of 2</p>
+<p>Read <a class="reference external" href="http://www.oraclejavamagazine-digital.com/javamagazine_open/20130304#pg67">Jython 101 - Part 1</a></p>
+<p><strong>Customizing Jython ProxyMaker</strong> (Wednesday, January 9, 2013)</p>
+<p>I just got a set of patches under &quot;Customizable ProxyMaker&quot; umbrella committed into Jython 2.7. In this post i will try to explain a bit of what Jython's ProxyMaker is and what benefits the ability to customize/override brings for interop with Java.</p>
+<p>Visit Post: <a class="reference external" href="http://darjus.blogspot.com/2013/01/customizing-jython-proxymaker.html">Customizing ProxyMaker</a></p>
+<p><strong>Jython Dev Notes Part 2:  Adding a New Builtin Type</strong> (Monday February 13, 2012)</p>
+<p>Releases of Python (and so releases of Jython) sometimes add new built-in types. In 2.6, a new such buitin is the &quot;bytes&quot; type. In the 2.x series, &quot;bytes&quot; is just a synonym for &quot;str&quot;. In 3.x &quot;bytes&quot; is the name used for 8 bit strings while &quot;str&quot; is a unicode string (and so the &quot;unicode&quot; type disappears in 3.x). This will make it a great example for adding a builtin since there is no added functionality to obscure the basics.  <a class="reference external" href="http://fwierzbicki.blogspot.com/2012/02/jython-dev-notes-part-ii-adding-new.html">Visit Post - Jython Dev Notes Part 2</a></p>
+<p><strong>Jython Dev Notes Part 1:  The Jython Exposer</strong> (Monday January 2, 2012)</p>
+<p>One of my new years resolutions is to make Jython more friendly to new developers. One way to do that is to write up some notes on bits of Jython that are particularly mysterious to newcomers. I've boldly titled this post &quot;Jython dev notes part I&quot; to push myself to create more than one of these :) <a class="reference external" href="http://fwierzbicki.blogspot.com/2012/01/jython-dev-notes-part-i-jython-exposer.html">Visit Post -  Jython Dev Notes Part 1</a></p>
+<p><strong>The Definitive Guide to Jython is Published</strong> (February 6, 2010)</p>
+<p><a class="reference external" href="http://apress.com/book/view/9781430225270">The Definitive Guide to Jython</a> , written by the official Jython team leads, covers the latest Jython 2.5 (or 2.5.x) from the basics to the advanced features. This book begins with a brief introduction to the language and then journeys through Jythons different features and uses.</p>
+<p><a class="reference external" href="http://apress.com/book/view/9781430225270">The Definitive Guide to Jython</a> is organized for beginners as well as advanced users of the language. The book provides a general overview of the Jython language itself, but it also includes intermediate and advanced topics regarding database, web, and GUI applications; frameworks; and integration, concurrency, and parallelism, to name a few.</p>
+<p>This book is available in open-source format at <a class="reference external" href="http://jythonbook.com">jythonbook.com</a>.</p>
+<p><strong>Websphere Application Server Administration Using Jython</strong> (January 30, 2010)</p>
+<p>Utilizing Jython scripting, you can dramatically reduce the effort, resources, and expense associated with managing WebSphere Application Server. WebSphere Application Server Administration Using Jython will show you how.  Read more about it at <a class="reference external" href="http://www.ibmpressbooks.com/bookstore/product.asp?isbn=9780137009527">ibmpressbooks.com</a> today.</p>
+<p><strong>Project Sikuli Released</strong> (January 28, 2010)</p>
+<p>Sikuli is a visual technology to search and automate graphical user interfaces (GUI) using images (screenshots). The first release of Sikuli contains Sikuli Script, a visual scripting API for Jython, and Sikuli IDE, an integrated development environment for writing visual scripts with screenshots easily. Sikuli Script automates anything you see on the screen without internal API's support. You can programmatically control a web page, a desktop application running on Windows/Linux/Mac OS X, or even an iphone application running in an emulator.  For more information, please visit the <a class="reference external" href="http://groups.csail.mit.edu/uid/sikuli/">Sikuli</a> project site.</p>
+<p><strong>Jython Doc Set Updated</strong> (November 08, 2009)</p>
+<p>The Jython <a class="reference external" href="http://jython.org/currentdocs.html">documentation</a> set has been updated to include all modules contained within the Jython standard library.  However, it should be noted that this is still a work in progress since many of these documents have not yet been parsed and tested completely with Jython 2.5.1.  Stay tuned for more updates on the doc set!</p>
+<p>Please report all found bugs to the <a class="reference external" href="http://bugs.jython.org/">jython bug tracker</a>.</p>
+<div class="section" id="jython-2-5-documentation">
+<h2>Jython 2.5 Documentation</h2>
+<p>The documentation for Jython 2.5 is being developed on our <a class="reference external" href="http://wiki.python.org/jython">wiki</a>.  Please help
+Jython by adding content and updating our wiki. As the content matures for 2.5
+it will be pulled back into this website.</p>
+<p>You may also wish to check the <a class="reference external" href="http://sourceforge.net/mailarchive/forum.php?forum_name=jython-users">jython-users</a> mailing list archives as many questions and answers can be found there.</p>
+
+</body>
+</html>

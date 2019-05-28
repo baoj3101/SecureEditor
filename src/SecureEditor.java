@@ -53,6 +53,8 @@ public class SecureEditor extends BaseEditor implements Encrypt {
         toolMenu.add(showD);
         toolMenu.add(showE);
         menuBar.add(toolMenu, 1);
+        
+        setIcon("lock.png");                        // change default window icon
     }
 
     public String getDocument() {

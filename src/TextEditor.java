@@ -16,6 +16,7 @@ public class TextEditor extends BaseEditor {
     public TextEditor() {
         super();
         setTitle("New File");
+        setIcon("note.png");                        // change default window icon
     }
 
     public String getDocument() {
@@ -25,7 +26,7 @@ public class TextEditor extends BaseEditor {
     // Open file and load into text pane
     public void OpenFile() {
         StringBuilder lines = new StringBuilder();
-        try ( BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()))) {
             String line;
             while ((line = br.readLine()) != null) {
                 lines.append(line).append("\r\n");
@@ -36,7 +37,7 @@ public class TextEditor extends BaseEditor {
         textPane.setText(lines.toString());
         setTitle(file.getName());
     }
-    
+
     // Save content from text pane to file
     public void SaveFile() {
         try {

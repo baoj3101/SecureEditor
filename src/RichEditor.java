@@ -25,6 +25,7 @@ public class RichEditor extends BaseEditor {
     // Toolbar items
     protected JComboBox<String> fontSizeSel;                  // font size
     protected JComboBox<String> fontFamilySel;                // font family
+    protected JComboBox<String> textAlignSel;                 // text align
     protected JButton btnBold, btnItalic, btnUnderline;       // font style
     protected JButton btnColor;                               // font color
 
@@ -54,7 +55,7 @@ public class RichEditor extends BaseEditor {
         btnUnderline.addActionListener(editBtnListener);
 
         // Color Button
-        btnColor = new JButton("Color");
+        btnColor = new JButton("<html><font color=\"red\">Color</font></html>");
         btnColor.addActionListener(new ColorBtnListener());
 
         // Font Family Selector
@@ -69,12 +70,21 @@ public class RichEditor extends BaseEditor {
         fontSizeSel.setEditable(false);
         fontSizeSel.addItemListener(new FontSizeListener());
 
+//        String[] ALIGNS = {"Left", "Center", "Right", "Justified"};
+        String[] ALIGNS = {"\uf036", "\uf037", "\uf038", "\uf039"};
+        textAlignSel = new JComboBox<String>(ALIGNS);
+        textAlignSel.setFont(fontAwesome);
+        textAlignSel.setEditable(false);
+        textAlignSel.addItemListener(new TextAlignListener());
+
         // panel
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.add(new JLabel("Font Family"));
         panel.add(fontFamilySel);
         panel.add(new JLabel("Font Size"));
         panel.add(fontSizeSel);
+        panel.add(new JLabel("Text Align"));
+        panel.add(textAlignSel);
         panel.add(new JSeparator(SwingConstants.VERTICAL));
         panel.add(btnBold);
         panel.add(btnItalic);
@@ -89,6 +99,7 @@ public class RichEditor extends BaseEditor {
         // add menubar and toolbar to frame
         frame.add(toolbarPanel, BorderLayout.NORTH);
         setTitle("New File");
+        setIcon("rtf.png");                        // change default window icon
     }
 
     // get doc from text pane
@@ -99,7 +110,7 @@ public class RichEditor extends BaseEditor {
     // Open file and load into text pane
     public void OpenFile() {
         StyledDocument doc = null;
-        try ( InputStream inStream = new FileInputStream(file);  ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
+        try (InputStream inStream = new FileInputStream(file); ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
             doc = (DefaultStyledDocument) objInStream.readObject();
         } catch (FileNotFoundException ex) {
             JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
@@ -114,7 +125,7 @@ public class RichEditor extends BaseEditor {
     // Save content from text pane to file
     public void SaveFile() {
         DefaultStyledDocument doc = (DefaultStyledDocument) getDocument();
-        try ( OutputStream outStream = new FileOutputStream(file);  ObjectOutputStream objOutStream = new ObjectOutputStream(outStream)) {
+        try (OutputStream outStream = new FileOutputStream(file); ObjectOutputStream objOutStream = new ObjectOutputStream(outStream)) {
             objOutStream.writeObject(doc);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -165,7 +176,7 @@ public class RichEditor extends BaseEditor {
     protected class FontSizeListener implements ItemListener {
 
         public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() != ItemEvent.SELECTED || fontSizeSel.getSelectedIndex() == 0) {
+            if (e.getStateChange() != ItemEvent.SELECTED) {
                 return;
             }
 
@@ -173,7 +184,6 @@ public class RichEditor extends BaseEditor {
             String sel = (String) e.getItem();
             int fontSize = Integer.parseInt((String) e.getItem());;
             fontSizeSel.setAction(new FontSizeAction(sel, fontSize));
-            //fontSizeSel.setSelectedIndex(0);
             textPane.requestFocusInWindow();
         }
     }
@@ -182,13 +192,30 @@ public class RichEditor extends BaseEditor {
     protected class FontFamilyListener implements ItemListener {
 
         public void itemStateChanged(ItemEvent e) {
-            if (e.getStateChange() != ItemEvent.SELECTED || fontFamilySel.getSelectedIndex() == 0) {
+            if (e.getStateChange() != ItemEvent.SELECTED) {
                 return;
             }
 
             String sel = (String) e.getItem();
             fontFamilySel.setAction(new FontFamilyAction(sel, sel));
-            //fontFamilySel.setSelectedIndex(0);
+            textPane.requestFocusInWindow();
+        }
+    }
+    
+    // text alignment selector event handler
+    protected class TextAlignListener implements ItemListener {
+
+        public void itemStateChanged(ItemEvent e) {
+            if (e.getStateChange() != ItemEvent.SELECTED) {
+                return;
+            }
+
+            // ALIGN_LEFT 0, 
+            // ALIGN_CENTER 1
+            // ALIGN_RIGHT 2
+            // ALIGN_JUSTIFIED 3
+            String sel = (String) e.getItem();
+            textAlignSel.setAction(new AlignmentAction(sel, textAlignSel.getSelectedIndex()));
             textPane.requestFocusInWindow();
         }
     }

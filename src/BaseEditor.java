@@ -10,6 +10,7 @@
  */
 import java.io.*;
 import java.awt.*;
+import java.awt.print.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -23,13 +24,24 @@ public abstract class BaseEditor {
 
     // file menu: Open File, Save File, and Exit 
     JMenuBar menuBar;
-    JMenuItem fileOpen, fileSave, fileExit, helpHowTo;
+    JMenuItem fileOpen, fileSave, filePrint, fileExit, helpHowTo;
 
     // file
     protected File file;
 
+    // font awesome
+    Font fontAwesome;
+
     // constructor
     public BaseEditor() {
+        // load font awesome
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream("resources/fontawesome-webfont.ttf")) {
+            fontAwesome = Font.createFont(Font.TRUETYPE_FONT, is);
+            fontAwesome = fontAwesome.deriveFont(Font.PLAIN, 16f);
+        } catch (IOException | FontFormatException ex) {
+            ex.printStackTrace();
+        }
+
         // initialize frame
         frame = new JFrame("BaseEditor");
         frame.setSize(800, 800);          // window size 800x800
@@ -46,12 +58,15 @@ public abstract class BaseEditor {
 
         // file menu: Open/Save/Exit
         JMenu fileMenu = new JMenu("File");
-        fileOpen = new JMenuItem("Open File");     // "Open File"
+        fileOpen = new JMenuItem("Open File");     // font-awesome foler-open Open File
         fileOpen.addActionListener(new FileOpenListener());
         fileMenu.add(fileOpen);
         fileSave = new JMenuItem("Save File");     // "Save File"
         fileSave.addActionListener(new FileSaveListener());
         fileMenu.add(fileSave);
+        filePrint = new JMenuItem("Print");        // "Print"
+        filePrint.addActionListener(new FilePrintListener());
+        fileMenu.add(filePrint);
         fileExit = new JMenuItem("Exit");          // "Exit"
         fileExit.addActionListener(new FileExitListener());
         fileMenu.add(fileExit);
@@ -69,8 +84,15 @@ public abstract class BaseEditor {
 
         // add menubar to frame
         frame.setJMenuBar(menuBar);
+
     }
 
+    // set icon image
+    public void setIcon (String iconFile) {
+        ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("resources/" + iconFile));
+        frame.setIconImage(img.getImage());
+    }
+    
     // show with splash
     public void show() {
         // app splash window with PNG
@@ -144,6 +166,19 @@ public abstract class BaseEditor {
         }
     }
 
+    // file menu event handler: Print
+    protected class FilePrintListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                textPane.print();
+            } catch (PrinterException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     // file menu even handler: Exit
     protected class FileExitListener implements ActionListener {
 
@@ -170,7 +205,7 @@ public abstract class BaseEditor {
 
             // load how to from file
             StringBuilder lines = new StringBuilder();
-            try ( InputStream is = getClass().getClassLoader().getResourceAsStream("resources/help.html");  BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+            try (InputStream is = getClass().getClassLoader().getResourceAsStream("resources/help.html"); BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     lines.append(line).append("\r\n");

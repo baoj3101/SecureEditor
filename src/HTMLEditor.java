@@ -20,6 +20,7 @@ public class HTMLEditor extends TextEditor {
     public HTMLEditor() {
         super();
         setTitle("New File");
+        setIcon("html.png");                        // change default window icon
 
         // add tool menu: to render HTML
         JMenu toolMenu = new JMenu("View");
