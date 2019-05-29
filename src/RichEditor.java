@@ -71,9 +71,9 @@ public class RichEditor extends BaseEditor {
         fontSizeSel.addItemListener(new FontSizeListener());
 
 //        String[] ALIGNS = {"Left", "Center", "Right", "Justified"};
-        String[] ALIGNS = {"\uf036", "\uf037", "\uf038", "\uf039"};
+        String[] ALIGNS = {"\uf036", "\uf037", "\uf038", "\uf039"};   // use font awesome icons: align-left/center/right/justified
         textAlignSel = new JComboBox<String>(ALIGNS);
-        textAlignSel.setFont(fontAwesome);
+        textAlignSel.setFont(fontAwesome);                            // load font awesome icons
         textAlignSel.setEditable(false);
         textAlignSel.addItemListener(new TextAlignListener());
 

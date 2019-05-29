@@ -34,10 +34,13 @@ public abstract class BaseEditor {
 
     // constructor
     public BaseEditor() {
-        // load font awesome
+        // load font awesome file fontawesome-webfont.ttf
         try (InputStream is = getClass().getClassLoader().getResourceAsStream("resources/fontawesome-webfont.ttf")) {
             fontAwesome = Font.createFont(Font.TRUETYPE_FONT, is);
             fontAwesome = fontAwesome.deriveFont(Font.PLAIN, 16f);
+            // How to use font awesome?
+            // JLabel label = new JLabel("\uf580");
+            // label.setFont(fontAwesome);
         } catch (IOException | FontFormatException ex) {
             ex.printStackTrace();
         }
@@ -56,7 +59,7 @@ public abstract class BaseEditor {
         scrollPane = new JScrollPane(textPane);
         frame.add(scrollPane, BorderLayout.CENTER);
 
-        // file menu: Open/Save/Exit
+        // file menu: Open/Save/Print/Exit
         JMenu fileMenu = new JMenu("File");
         fileOpen = new JMenuItem("Open File");     // font-awesome foler-open Open File
         fileOpen.addActionListener(new FileOpenListener());
@@ -84,7 +87,6 @@ public abstract class BaseEditor {
 
         // add menubar to frame
         frame.setJMenuBar(menuBar);
-
     }
 
     // set icon image
@@ -172,7 +174,7 @@ public abstract class BaseEditor {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                textPane.print();
+                textPane.print();          // open print dialog
             } catch (PrinterException ex) {
                 ex.printStackTrace();
             }
@@ -195,7 +197,7 @@ public abstract class BaseEditor {
         public void actionPerformed(ActionEvent e) {
             // initialize popup window for help
             JFrame popup = new JFrame();
-            popup.setSize(800, 600);
+            popup.setSize(800, 900);
             popup.setLocation(200, 200);
             popup.setTitle("Help");
             JTextPane textArea = new JTextPane();
