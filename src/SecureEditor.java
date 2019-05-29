@@ -32,6 +32,8 @@ public class SecureEditor extends BaseEditor implements Encrypt {
     
     // tool menu
     JMenuItem showD, showE;
+    
+    JMenuItem switchH, switchR, switchT;
 
     // buffer to store editor content
     private String contents;
@@ -41,7 +43,6 @@ public class SecureEditor extends BaseEditor implements Encrypt {
         super();
         setTitle("New File");
         Security.setProperty("crypto.policy", "unlimited");
-        
         // add tool menu: to show encrypted or decrypted content
         JMenu toolMenu = new JMenu("View");
         showE = new JMenuItem("Show Encrypted");     // "Show Encrypted"
@@ -54,8 +55,44 @@ public class SecureEditor extends BaseEditor implements Encrypt {
         toolMenu.add(showE);
         menuBar.add(toolMenu, 1);
         
+        JMenu switchMenu = new JMenu("Switch");
+        switchT = new JMenuItem("Open TextEditor");
+        switchT.setEnabled(true);
+        switchT.addActionListener(new SwitchTListener());
+        switchMenu.add(switchT);
+        menuBar.add(switchMenu, 2);
+        
+        switchH = new JMenuItem("Open HTMLEditor");
+        switchH.setEnabled(true);
+        switchH.addActionListener(new SwitchHListener());
+        switchMenu.add(switchH);
+        
+        
         setIcon("lock.png");                        // change default window icon
     }
+    
+    protected class SwitchTListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            TextEditor run = new TextEditor();
+            run.main(new String[] {});
+            switchT.setEnabled(false);
+        }
+    }
+    
+    protected class SwitchHListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            HTMLEditor run = new HTMLEditor();
+            run.main(new String[] {});
+            switchH.setEnabled(false);
+        }
+    }
+    
 
     public String getDocument() {
         return textPane.getText();
