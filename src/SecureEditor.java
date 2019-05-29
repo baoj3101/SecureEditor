@@ -21,7 +21,6 @@ import javax.crypto.spec.SecretKeySpec;
 public class SecureEditor extends BaseEditor implements Encrypt {
 
     // encryption variables
-
     // By default, AES supports a 128 Bit key. 
     // To use longer key size, need higher version of JDK > JDK8
     private static final int keySize = 128;                // 128-bit AES
@@ -29,11 +28,8 @@ public class SecureEditor extends BaseEditor implements Encrypt {
 
     //    private static final int keySize = 256;          // 256-bit AES
     //    private static final String key = "x,.@$klk;a,cjk09{}-==oiurcsgq!*&"; // 32 char key for AES
-    
     // tool menu
     JMenuItem showD, showE;
-    
-    JMenuItem switchH, switchR, switchT;
 
     // buffer to store editor content
     private String contents;
@@ -54,45 +50,11 @@ public class SecureEditor extends BaseEditor implements Encrypt {
         toolMenu.add(showD);
         toolMenu.add(showE);
         menuBar.add(toolMenu, 1);
-        
-        JMenu switchMenu = new JMenu("Switch");
-        switchT = new JMenuItem("Open TextEditor");
-        switchT.setEnabled(true);
-        switchT.addActionListener(new SwitchTListener());
-        switchMenu.add(switchT);
-        menuBar.add(switchMenu, 2);
-        
-        switchH = new JMenuItem("Open HTMLEditor");
-        switchH.setEnabled(true);
-        switchH.addActionListener(new SwitchHListener());
-        switchMenu.add(switchH);
-        
-        
+
+        switchS.setEnabled(false);                  // disable switch to myself
+        switchT.setEnabled(true);                   
         setIcon("lock.png");                        // change default window icon
     }
-    
-    protected class SwitchTListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            TextEditor run = new TextEditor();
-            run.main(new String[] {});
-            switchT.setEnabled(false);
-        }
-    }
-    
-    protected class SwitchHListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            HTMLEditor run = new HTMLEditor();
-            run.main(new String[] {});
-            switchH.setEnabled(false);
-        }
-    }
-    
 
     public String getDocument() {
         return textPane.getText();

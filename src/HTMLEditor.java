@@ -20,6 +20,8 @@ public class HTMLEditor extends TextEditor {
     public HTMLEditor() {
         super();
         setTitle("New File");
+        switchH.setEnabled(false);                  // disable switch to myself
+        switchT.setEnabled(true);                   
         setIcon("html.png");                        // change default window icon
 
         // add tool menu: to render HTML

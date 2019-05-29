@@ -19,6 +19,7 @@ import javax.swing.text.*;
 import javax.swing.event.*;
 import javax.swing.text.DefaultEditorKit.*;
 import javax.swing.text.StyledEditorKit.*;
+import javax.swing.text.rtf.RTFEditorKit;
 
 public class RichEditor extends BaseEditor {
 
@@ -99,6 +100,7 @@ public class RichEditor extends BaseEditor {
         // add menubar and toolbar to frame
         frame.add(toolbarPanel, BorderLayout.NORTH);
         setTitle("New File");
+        switchR.setEnabled(false);                  // disable switch to myself
         setIcon("rtf.png");                        // change default window icon
     }
 
@@ -107,31 +109,31 @@ public class RichEditor extends BaseEditor {
         return (DefaultStyledDocument) textPane.getDocument();
     }
 
-    // Open file and load into text pane
+    // Open file and load into text pane using RTFEditorKit
+    // Saved file in XML format
     public void OpenFile() {
-        StyledDocument doc = null;
-        try (InputStream inStream = new FileInputStream(file); ObjectInputStream objInStream = new ObjectInputStream(inStream)) {
-            doc = (DefaultStyledDocument) objInStream.readObject();
-        } catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(frame, "File not found: " + file.getName());
-            return;
-        } catch (ClassNotFoundException | IOException ex) {
+        DefaultStyledDocument doc = new DefaultStyledDocument();
+        try (InputStream is = new FileInputStream(file)) {
+            RTFEditorKit rtfKit = new RTFEditorKit();
+            rtfKit.read(is, doc, 0);
+        } catch (Throwable ex) {
             throw new RuntimeException(ex);
         }
         textPane.setDocument(doc);
         setTitle(file.getName());
     }
 
-    // Save content from text pane to file
+    // Save content from text pane to file using RTFEditorKit
+    // Saved file in XML format
     public void SaveFile() {
         DefaultStyledDocument doc = (DefaultStyledDocument) getDocument();
-        try (OutputStream outStream = new FileOutputStream(file); ObjectOutputStream objOutStream = new ObjectOutputStream(outStream)) {
-            objOutStream.writeObject(doc);
-        } catch (IOException ex) {
-            throw new RuntimeException(ex);
+        RTFEditorKit rtfKit = new RTFEditorKit();
+        try {
+            rtfKit.write(new FileOutputStream(file), doc, 0, doc.getLength());
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         setTitle(file.getName());
-
     }
 
     // abstract methods
@@ -201,7 +203,7 @@ public class RichEditor extends BaseEditor {
             textPane.requestFocusInWindow();
         }
     }
-    
+
     // text alignment selector event handler
     protected class TextAlignListener implements ItemListener {
 

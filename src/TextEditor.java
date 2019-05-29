@@ -16,6 +16,7 @@ public class TextEditor extends BaseEditor {
     public TextEditor() {
         super();
         setTitle("New File");
+        switchT.setEnabled(false);                  // disable switch to myself
         setIcon("note.png");                        // change default window icon
     }
 

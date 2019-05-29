@@ -25,6 +25,7 @@ public abstract class BaseEditor {
     // file menu: Open File, Save File, and Exit 
     JMenuBar menuBar;
     JMenuItem fileOpen, fileSave, filePrint, fileExit, helpHowTo;
+    JMenuItem switchH, switchR, switchT, switchS;
 
     // file
     protected File file;
@@ -47,9 +48,9 @@ public abstract class BaseEditor {
 
         // initialize frame
         frame = new JFrame("BaseEditor");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 800);          // window size 800x800
         frame.setLocation(100, 100);      // window location
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // initialize text pane
         textPane = new JTextPane();
@@ -74,6 +75,22 @@ public abstract class BaseEditor {
         fileExit.addActionListener(new FileExitListener());
         fileMenu.add(fileExit);
 
+        // Editor menu to switch editors
+        SwitchListener switchListener = new SwitchListener();
+        JMenu switchMenu = new JMenu("Editor");
+        switchT = new JMenuItem("Open Text Editor");
+        switchT.addActionListener(switchListener);
+        switchMenu.add(switchT);
+        switchR = new JMenuItem("Open Rich Editor");
+        switchR.addActionListener(switchListener);
+        switchMenu.add(switchR);
+        switchH = new JMenuItem("Open HTML Editor");
+        switchH.addActionListener(switchListener);
+        switchMenu.add(switchH);
+        switchS = new JMenuItem("Open Secure Editor");
+        switchS.addActionListener(switchListener);
+        switchMenu.add(switchS);
+
         // help menu: How To
         JMenu helpMenu = new JMenu("Help");
         helpHowTo = new JMenuItem("How to ...");   // "How to"
@@ -83,6 +100,7 @@ public abstract class BaseEditor {
         // menu bar
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
+        menuBar.add(switchMenu);
         menuBar.add(helpMenu);
 
         // add menubar to frame
@@ -90,11 +108,11 @@ public abstract class BaseEditor {
     }
 
     // set icon image
-    public void setIcon (String iconFile) {
+    public void setIcon(String iconFile) {
         ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("resources/" + iconFile));
         frame.setIconImage(img.getImage());
     }
-    
+
     // show with splash
     public void show() {
         // app splash window with PNG
@@ -187,6 +205,27 @@ public abstract class BaseEditor {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
+        }
+    }
+
+    // editor switch menu event handler: 
+    protected class SwitchListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String sel = e.getActionCommand();
+            BaseEditor editor = null;
+            if (sel.equals("Open Text Editor")) {
+                editor = new TextEditor();
+            } else if (sel.equals("Open HTML Editor")) {
+                editor = new HTMLEditor();
+            } else if (sel.equals("Open Rich Editor")) {
+                editor = new RichEditor();
+            } else if (sel.equals("Open Secure Editor")) {
+                editor = new SecureEditor();
+            }
+            editor.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);   // new editor does not close application
+            editor.show();
         }
     }
 
