@@ -8,17 +8,14 @@ The project uses the Java interface, abstract class, and inheritance to practice
 
 ## Classes
 
-**Encrypt**: This is an interface with two methods: encrypt and decrypt.
-
-**BaseEditor**: This is the base class which contains the common frame, text pane, and file menu, editor switch menu, help menu, as well as menu event handlers. There are three abstract methods: SetTitle, OpenFile, and SaveFile.
-
-**TextEditor**: This is extended from BaseEditor with all abstract methods implemented. It's a functional text editor.
-
-**RichEditor**: This is extended from BaseEditor and added toolbar for text font customization: font size, font family, font style (Bold/Italic/Underline), and font color.
-
-**HTMLEditor**: This is extended from BaseEditor with tool menu for HTML rendering. It's intended for raw HTML editing and rendering.
-
-**SecureEditor**: This is extended from TextEditor and implements Encrypt interface. It supports 128-bit AES encryptino and decryption. When a file is saved, the content is encrypted and then encoded using base64. When a file is loaded, the content is decoded using base64 and then decrypted using AES.
+Class/Interface | Description
+------------ | -------------
+Interface **Encrypt** | This is an interface with two methods: encrypt and decrypt.
+Abstract Class **BaseEditor** | This is the base class which contains the common frame, text pane, and file menu, editor switch menu, help menu, as well as menu event handlers. There are three abstract methods: SetTitle, OpenFile, and SaveFile.
+Class **TextEditor** extentds BaseEditor | This is extended from BaseEditor with all abstract methods implemented. It's a functional text editor.
+Class **HTMLEditor** extentds TextEditor | This is extended from BaseEditor with tool menu for HTML rendering. It's intended for raw HTML editing and rendering.
+Class **SecureEditor** extentds TextEditor | This is extended from TextEditor and implements Encrypt interface. It supports **128-bit AES** encryptino and decryption. When a file is saved, the content is encrypted and then encoded using base64. When a file is loaded, the content is decoded using base64 and then decrypted using AES.
+Class **RichEditor** extentds BaseEditor | This is extended from BaseEditor and added toolbar for text font customization: font size, font family, font style (Bold/Italic/Underline), and font color.
 
 ## Resources
 
@@ -35,6 +32,8 @@ Each editor has its own icon using JFrame setIconImage.
 ## File Open/Save
 
 File menu open and save event handlers are implemented in the BaseEditor class. However, for each type of editor, the file read and write are editor specific and implemented in each inherited class in OpenFile and SaveFile methods (defined as abstract in the BaseEditor).
+
+Four example files are saved under test/ directory as demo. When file dialog is openned, the default location is set to the test direcory.
 
 ## Rich Editor Open/Save
 
