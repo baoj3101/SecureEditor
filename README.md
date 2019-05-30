@@ -39,6 +39,13 @@ A PNG image is loaded as splash during app startup. The splash contains project 
 ## Icons
 
 Each editor has its own icon using JFrame setIconImage.
+```
+    // set icon image
+    public void setIcon(String iconFile) {
+        ImageIcon img = new ImageIcon(getClass().getClassLoader().getResource("resources/" + iconFile));
+        frame.setIconImage(img.getImage());
+    }
+```
 
 ## File Open/Save
 
@@ -49,8 +56,19 @@ Four example files are saved under test/ directory as demo. When file dialog is 
 ## Rich Editor Open/Save
 
 Rich Editor open/save uses the RTFEditorKit (import javax.swing.text.rtf.RTFEditorKit) to handle rich text style.
+```
+        DefaultStyledDocument doc = (DefaultStyledDocument) getDocument();
+        RTFEditorKit rtfKit = new RTFEditorKit();
+        try {
+            rtfKit.write(new FileOutputStream(file), doc, 0, doc.getLength());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+```
 
 ## Secure Editor Open/Save
 
 Secure Editor uses the Cipher (import javax.crypto.Cipher) for editor content encryption/decryption. A 128-but AES encryption followed by BASE64 encoding is applied for file saving. When load from a file, BASE64 decoding followed by 128-bit AES decryption is performed before loading into the editor. AES stands for Advanced Encryption Standard and [this page](https://www.comparitech.com/blog/information-security/what-is-aes-encryption/) provides a good explaination of AES algorithm.
+
+
 
