@@ -48,7 +48,7 @@ public abstract class BaseEditor {
 
         // initialize frame
         frame = new JFrame("BaseEditor");
-        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 800);          // window size 800x800
         frame.setLocation(100, 100);      // window location
 
