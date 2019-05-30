@@ -24,7 +24,7 @@ public abstract class BaseEditor {
 
     // file menu: Open File, Save File, and Exit 
     JMenuBar menuBar;
-    JMenuItem fileOpen, fileSave, filePrint, fileExit, helpHowTo;
+    JMenuItem fileOpen, fileSave, filePrint, fileClose, fileExit, helpHowTo;
     JMenuItem switchH, switchR, switchT, switchS;
 
     // file
@@ -48,7 +48,7 @@ public abstract class BaseEditor {
 
         // initialize frame
         frame = new JFrame("BaseEditor");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         frame.setSize(800, 800);          // window size 800x800
         frame.setLocation(100, 100);      // window location
 
@@ -68,9 +68,14 @@ public abstract class BaseEditor {
         fileSave = new JMenuItem("Save File");     // "Save File"
         fileSave.addActionListener(new FileSaveListener());
         fileMenu.add(fileSave);
+        fileMenu.add(new JSeparator());
         filePrint = new JMenuItem("Print");        // "Print"
         filePrint.addActionListener(new FilePrintListener());
         fileMenu.add(filePrint);
+        fileMenu.add(new JSeparator());
+        fileClose = new JMenuItem("Close");          // "Close"
+        fileClose.addActionListener(new FileCloseListener());
+        fileMenu.add(fileClose);
         fileExit = new JMenuItem("Exit");          // "Exit"
         fileExit.addActionListener(new FileExitListener());
         fileMenu.add(fileExit);
@@ -157,7 +162,7 @@ public abstract class BaseEditor {
         @Override
         public void actionPerformed(ActionEvent e) {
             // open file dialog and choose a file to open
-            JFileChooser fileChooser = new JFileChooser();
+            JFileChooser fileChooser = new JFileChooser(new File("test"));
             if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
                 file = fileChooser.getSelectedFile();
             } else {
@@ -174,7 +179,7 @@ public abstract class BaseEditor {
         public void actionPerformed(ActionEvent e) {
             // open file dialog and choose a file to save
             if (file == null) {
-                JFileChooser fileChooser = new JFileChooser();
+                JFileChooser fileChooser = new JFileChooser(new File("test"));
                 if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
                     file = fileChooser.getSelectedFile();
                 }
@@ -199,6 +204,16 @@ public abstract class BaseEditor {
         }
     }
 
+    
+    // file menu even handler: Close
+    protected class FileCloseListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            frame.setVisible(false);
+        }
+    }
+    
     // file menu even handler: Exit
     protected class FileExitListener implements ActionListener {
 

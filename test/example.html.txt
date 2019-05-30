@@ -3,6 +3,7 @@
 <title>The Jython Project</title>
 </head>
 <body>
+<img src="https://jython.github.io/assets/jython.png" >
 <p><strong>Jython 2.7.0 Final Released</strong> (May 2015)</p>
 <p>Please see the <a class="reference external" href="https://hg.python.org/jython/file/412a8f9445f7/NEWS">NEWS</a>
 file for detailed release notes.</p>
