@@ -19,8 +19,19 @@ Class **RichEditor** extentds BaseEditor | This is extended from BaseEditor and 
 
 ## Resources
 
-Resources directory contains app splash PNG, icon image for each type of editor, font awesome ttf file, and help message in HTML.
+Resources directory contains the following resources for the app:
 
+* App splash image
+> splash.png
+* Icon image for each type of editor
+> html.png
+> lock.png
+> note.png
+> rtf.png
+* Font awesome ttf file
+> fontawesome-webfont.ttf
+* Help message in HTML
+> help.html
 ## Splash
 
 A PNG image is loaded as splash during app startup. The splash contains project name, author and a basic description of the project.
