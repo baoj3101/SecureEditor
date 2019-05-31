@@ -80,22 +80,27 @@ Secure Editor uses the Cipher (import javax.crypto.Cipher) for editor content en
 * Build the project
 * Run
 * Test Editor will open
-** Open File: Choose example.text.txt
-** Edit: use Ctrl+C/Ctrl+V/Ctrl+X
-** Save File
-** Print (if printer is available)
-** Help -> How To
-** Editors: Open HTML Editor
+  * Open File: Choose example.text.txt
+  * Edit: use Ctrl+C/Ctrl+V/Ctrl+X
+  * Save File
+  * Print (if printer is available)
+  * Help -> How To
+  * Editors: Open HTML Editor
 * HTML Editor will open
-** Open File: Choose example.html.txt
-** Edit File: add a new paragraph
-** View -> Show HTML
-** View -> Show Plain
-** Save File
-** Editors: Open Rich Editor
+  * Open File: Choose example.html.txt
+  * Edit File: add a new paragraph
+  * View -> Show HTML
+  * View -> Show Plain
+  * Save File
+  * Editors: Open Rich Editor
 * Rich Editor will open
-** Open File: Choose example.rich.txt
-** Try customize font style, size, family, and color
-** Editors: Open Secure Editor
+  * Open File: Choose example.rich.txt
+  * Try customize font style, size, family, and color
+  * Editors: Open Secure Editor
 * Secure Editor will open
-
+  * Open File: Choose example.secure.txt
+  * View -> Show Encrypted (You can also load the same file into Text Editor to see the encrypted contents)
+  * View -> Show Decrypted
+  * Edit
+  * Save File
+  * Close
